@@ -4,8 +4,6 @@ import java.awt.*;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel{	
-   layeredPane = new JLayeredPane();
-
 	public static final int BOARD_WIDTH = 300;
 	public static final int BOARD_HEIGHT = 300;
 	private Pawn wp1;
