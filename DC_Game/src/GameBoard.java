@@ -4,8 +4,8 @@ import java.awt.*;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel{	
-	public static final int BOARD_WIDTH = 2000;
-	public static final int BOARD_HEIGHT = 2000;
+	public static final int BOARD_WIDTH = 300;
+	public static final int BOARD_HEIGHT = 300;
 	// Creates board every-time the code is run based on current status
 	public GameBoard() {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -28,5 +28,10 @@ public class GameBoard extends JPanel{
 	// Set the parameters when the board is created
 	public void reset() {
 		return;
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
 	}
 }
