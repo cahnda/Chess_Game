@@ -2,7 +2,6 @@
 // imports necessary libraries for Java swing
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 /**
@@ -19,7 +18,8 @@ public class Game implements Runnable {
 		frame.setLocation(300, 300);
 
 		// Main playing area
-		final GameBoard court = new GameBoard();
+		GameBoard court;
+		court = new GameBoard();
 		frame.add(court, BorderLayout.CENTER);
 
 		// Reset button
