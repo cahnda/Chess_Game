@@ -18,7 +18,7 @@ public class GameBoard extends JPanel{
 	private JPanel [][] squares;
 	protected static ImageIcon ICON = null;
 	private click_mode myMode;
-	
+	private Point clickedPiece;
 
 
 	// Creates board every-time the code is run based on current status
@@ -152,6 +152,7 @@ public class GameBoard extends JPanel{
 							squares[p.getX()][p.getY()].
 							setBackground(Color.green);
 						}
+						clickedPiece = new Point (i,j);
 						myMode = click_mode.clicked;
 						refreshBoard();
 					}
@@ -160,18 +161,34 @@ public class GameBoard extends JPanel{
 				// Set up Functionality for Second Click
 				else {
 					if (square.getBackground().equals(Color.green)) {
-						squares.indexOf(square);
+						System.out.println ("hit it");
+						int x = clickedPiece.getX();
+						System.out.println(x);
+						System.out.println(i);
+						int y = clickedPiece.getY();
+						System.out.println(y);
+						System.out.println(j);
+						board_arrangement[i][j] = board_arrangement[x][y];
+						board_arrangement[x][y] = null;
 					}
-					else {
-						createNewBoard();
-						refreshBoard();
-					}
+					createNewBoard();
+					refreshBoard();
 					myMode = click_mode.unclicked;
 				}
 			}
 		});
 	}
 
+	
+	public Point findMySquare(JPanel square) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (square == squares [i][j])
+					return new Point (i,j);
+			}
+		}
+		return null;
+	}
 
 	public void refreshBoard() {
 		this.removeAll();

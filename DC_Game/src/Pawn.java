@@ -29,8 +29,13 @@ public class Pawn extends Piece {
 			val2 = i - 2;
 		}
 		Point P1 = new Point (val1, j);
+		if (board_arrangement [val1][j] == null) {
+			arr.add(P1);
+		}
 		Point P2 = new Point (val2, j);
-		arr.add(P1); arr.add(P2);
+		if (board_arrangement [val1][j] == null) {
+			arr.add(P2);
+		}
 		
 		//Add ability to capture pieces diagonally
 		int[] capVals = new int[2]; capVals[0]=j+1; capVals[1]=j-1;
@@ -47,9 +52,8 @@ public class Pawn extends Piece {
 		for (Point p: arr) {
 			if (p.getX() > 8 || p.getX() < 0 ||
 					p.getY() > 8 || p.getY() < 0) {
-						arr.remove(p);
-					}
-			System.out.println(p.getY());
+				arr.remove(p);
+			}
 		}
 		return arr;
 	}
