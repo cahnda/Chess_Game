@@ -54,8 +54,6 @@ public class Bishop extends Piece {
 		//back left
 		for (int frw = 1; frw <= 7-i; frw++) {
 			if ((i + frw < 8) && (j-frw >= 0)) {
-				System.out.println (i + frw);
-				System.out.println (j-frw);
 				Point p = new Point (i + frw, j - frw);
 				arr.add(p);
 				if (!(board_arrangement [i + frw][j - frw] == null)) {
