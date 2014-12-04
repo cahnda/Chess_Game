@@ -143,7 +143,7 @@ public class GameBoard extends JPanel{
 		
 	private void addEventListners(JPanel square, int i, int j) {
 		square.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				// Set up Functionality for First Click
 				if (myMode == click_mode.unclicked) {
 					if (board_arrangement[i][j] != null) {
@@ -174,11 +174,11 @@ public class GameBoard extends JPanel{
 						System.out.println(j);
 						board_arrangement[i][j] = board_arrangement[x][y];
 						board_arrangement[x][y] = null;
+						turn = !(turn);
 					}
 					myMode = click_mode.unclicked;
 					createNewBoard();
 					refreshBoard();
-					turn = !(turn);
 				}
 			}
 		});

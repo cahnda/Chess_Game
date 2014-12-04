@@ -33,7 +33,7 @@ public class Pawn extends Piece {
 			arr.add(P1);
 		}
 		Point P2 = new Point (val2, j);
-		if (board_arrangement [val1][j] == null) {
+		if (board_arrangement [val1][j] == null && (i == 1 || i == 6)) {
 			arr.add(P2);
 		}
 		
