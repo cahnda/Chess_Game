@@ -2,18 +2,27 @@ import javax.imageio.*;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel{
+	public enum click_mode {
+		unclicked, clicked
+	}
+	
 	public static final int BOARD_WIDTH = 600;
 	public static final int BOARD_HEIGHT = 600;
 	private Piece [][] board_arrangement;
 	private JPanel [][] squares;
 	protected static ImageIcon ICON = null;
+	private click_mode myMode;
 	
+
+
 	// Creates board every-time the code is run based on current status
 	public GameBoard() {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -21,9 +30,10 @@ public class GameBoard extends JPanel{
 		squares = new JPanel[8][8];
 		setLayout(new GridLayout(8,8));
 		setSize (BOARD_WIDTH,BOARD_HEIGHT);
+		myMode = click_mode.unclicked;
 	}
 	
-	public void createBoard() {
+	public void createNewBoard() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				JPanel square = new JPanel();
@@ -37,76 +47,58 @@ public class GameBoard extends JPanel{
 		}
 	}
 	
-	public ImageIcon readImage(String filename) {
-		int width = this.getWidth() / 8;
-		int height = this.getHeight() / 8;
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File(filename));
-		} catch (IOException e) {
-			System.out.println ("If this happens, this code will break. "
-					+ "It won't, because the images are hardcoded in.");		
+	public void addBoard() {
+		for (JPanel[] j_list: squares) {
+			for (JPanel j: j_list) {
+				this.add(j);
+			}
 		}
-		Image pic = img.getScaledInstance( (int) (.8 * width),(int) (.8 * height),
-				Image.SCALE_SMOOTH);
-		return new ImageIcon(pic);
 	}
 	
-	public void addPieces() {
+	
+	public void newPieces() {
 		//Starting with zero for consistent with CS norms
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++){
 				if (i == 1 || i == 6) {
-					board_arrangement[i][j] = new Pawn();
 					if (i == 1)
-						ICON = readImage("pawn.png");
-					else
-						ICON = readImage("bpawn.png");
-					squares[i][j].add (new JLabel (ICON));
+						board_arrangement[i][j] = new Pawn(true,BOARD_WIDTH,BOARD_HEIGHT);
+					else 
+						board_arrangement[i][j] = new Pawn(false,BOARD_WIDTH,BOARD_HEIGHT);
 				}
 				else {
 					if (i == 0 || i == 7) {
 						if (j == 0 || j == 7) {
-							board_arrangement[i][j] = new Rook();
 							if (i == 0)
-								ICON = readImage("rook.png");
+								board_arrangement[i][j] = new Rook(true,BOARD_WIDTH,BOARD_HEIGHT);
 							else
-								ICON = readImage("brook.png");
-							squares[i][j].add (new JLabel (ICON));
+								board_arrangement[i][j] = new Rook(false,BOARD_WIDTH,BOARD_HEIGHT);
 						}
 						if (j == 1 || j == 6) {
-							board_arrangement[i][j] = new Knight();
 							if (i == 0)
-								ICON = readImage("knight.png");
-							else
-								ICON = readImage("bknight.png");
-							squares[i][j].add (new JLabel (ICON));
+								board_arrangement[i][j] = new Knight(true,BOARD_WIDTH,BOARD_HEIGHT);
+							else 
+								board_arrangement[i][j] = new Knight(false,BOARD_WIDTH,BOARD_HEIGHT);
 						}
 						if (j == 2 || j == 5) {
-							board_arrangement[i][j] = new Bishop();
 							if (i == 0)
-								ICON = readImage("bishop.png");
-							else
-								ICON = readImage("bbishop.png");
-							squares[i][j].add (new JLabel (ICON));						
+								board_arrangement[i][j] = new Bishop(true,BOARD_WIDTH,BOARD_HEIGHT);
+							else 
+								board_arrangement[i][j] = new Bishop(false,BOARD_WIDTH,BOARD_HEIGHT);
 						}
 						if (j == 3){
-							board_arrangement[i][j] = new Queen();
 							if (i == 0)
-								ICON = readImage("queen.png");
+								board_arrangement[i][j] = new Queen(true,BOARD_WIDTH,BOARD_HEIGHT);
 							else 
-								ICON = readImage("bqueen.png");
-							squares[i][j].add (new JLabel (ICON));						
+								board_arrangement[i][j] = new Queen(false,BOARD_WIDTH,BOARD_HEIGHT);
 						}
 						if (j == 4){
-							board_arrangement[i][j] = new King();
 							if (i == 0)
-								ICON = readImage("king.png");
-							else
-								ICON = readImage("bking.png");
-							squares[i][j].add (new JLabel (ICON));						
+								board_arrangement[i][j] = new King(true,BOARD_WIDTH,BOARD_HEIGHT);
+							else 
+								board_arrangement[i][j] = new King(false,BOARD_WIDTH,BOARD_HEIGHT);
 						}
-					}
+					} 
 					else {
 						board_arrangement[i][j] = null;
 					}
@@ -115,17 +107,55 @@ public class GameBoard extends JPanel{
 		}
 	}
 	
-
-	// Set the parameters when the board is created
-	public void reset() {
-		this.removeAll();
-		createBoard();
-		for (JPanel[] j_list: squares) {
-			for (JPanel j: j_list) {
-				this.add(j);
+	public void addPieces() {
+		for (int i = 0; i < board_arrangement.length; i++) {
+			for (int j = 0; j < board_arrangement.length; j++) {
+				if (!(board_arrangement[i][j] == null)) {
+					squares[i][j].add(board_arrangement[i][j].getLabel());
+				}
 			}
 		}
+	}
+	
+/*
+	private void addListnerUnclicked(JLabel l, int i, int j) {
+		l.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				myMode = click_mode.clicked;
+				Point [] myOptions = board_arrangement[i][j].getOptions(board_arrangement,i,j);
+				for (Point p: myOptions) {
+					squares[p.getX()][p.getY()].setBackground(Color.green);
+				}
+			}
+		});
+	}*/
+	
+	
+	public void refreshBoard() {
+		this.removeAll();
 		addPieces();
+		addBoard();
+	}
+	
+	
+	// Set the parameters when the board is created
+	public void reset() {
+		//Clear all
+		this.removeAll();
+		
+		//Create new board
+		createNewBoard();
+		
+		//Create the new pieces
+		newPieces();
+		
+		//Add the pieces to our board
+		addPieces();
+		
+		//Add the board to our JPanel
+		addBoard();
+		
+		//Refresh the board
 		this.revalidate();
 	}
 	
