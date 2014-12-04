@@ -8,8 +8,8 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel{
-	public static final int BOARD_WIDTH = 300;
-	public static final int BOARD_HEIGHT = 300;
+	public static final int BOARD_WIDTH = 600;
+	public static final int BOARD_HEIGHT = 600;
 	private Piece [][] board_arrangement;
 	private JPanel [][] squares;
 	protected static ImageIcon ICON = null;
@@ -28,7 +28,7 @@ public class GameBoard extends JPanel{
 			for (int j = 0; j < 8; j++) {
 				JPanel square = new JPanel();
 				if ((i + j) % 2 == 0) {
-					square.setBackground(Color.black);
+					square.setBackground(Color.DARK_GRAY);
 				} else {
 					square.setBackground(Color.white);
 				}   
@@ -58,50 +58,54 @@ public class GameBoard extends JPanel{
 			for (int j = 0; j < 8; j++){
 				if (i == 1 || i == 6) {
 					board_arrangement[i][j] = new Pawn();
-					ICON = readImage("poison.png");
+					if (i == 1)
+						ICON = readImage("pawn.png");
+					else
+						ICON = readImage("bpawn.png");
 					squares[i][j].add (new JLabel (ICON));
-				} else {
+				}
+				else {
 					if (i == 0 || i == 7) {
 						if (j == 0 || j == 7) {
 							board_arrangement[i][j] = new Rook();
-							ICON = readImage("poison.png");
+							if (i == 0)
+								ICON = readImage("rook.png");
+							else
+								ICON = readImage("brook.png");
 							squares[i][j].add (new JLabel (ICON));
 						}
 						if (j == 1 || j == 6) {
 							board_arrangement[i][j] = new Knight();
-							ICON = readImage("poison.png");
+							if (i == 0)
+								ICON = readImage("knight.png");
+							else
+								ICON = readImage("bknight.png");
 							squares[i][j].add (new JLabel (ICON));
 						}
 						if (j == 2 || j == 5) {
 							board_arrangement[i][j] = new Bishop();
-							ICON = readImage("poison.png");
+							if (i == 0)
+								ICON = readImage("bishop.png");
+							else
+								ICON = readImage("bbishop.png");
 							squares[i][j].add (new JLabel (ICON));						
 						}
-						if ( i == 0) {
-							if (j == 3){
-								board_arrangement[i][j] = new Queen();
-								ICON = readImage("poison.png");
-								squares[i][j].add (new JLabel (ICON));						
-							}
-							if (j == 4){
-								board_arrangement[i][j] = new King();
-								ICON = readImage("poison.png");
-								squares[i][j].add (new JLabel (ICON));						
-							}
-						} 
-						else {
-							if (j == 3){
-								board_arrangement[i][j] = new King();
-								ICON = readImage("poison.png");
-								squares[i][j].add (new JLabel (ICON));
-							}
-							if (j == 4){
-								board_arrangement[i][j] = new Queen();
-								ICON = readImage("poison.png");
-								squares[i][j].add (new JLabel (ICON));	
-							} 
+						if (j == 3){
+							board_arrangement[i][j] = new Queen();
+							if (i == 0)
+								ICON = readImage("queen.png");
+							else 
+								ICON = readImage("bqueen.png");
+							squares[i][j].add (new JLabel (ICON));						
 						}
-
+						if (j == 4){
+							board_arrangement[i][j] = new King();
+							if (i == 0)
+								ICON = readImage("king.png");
+							else
+								ICON = readImage("bking.png");
+							squares[i][j].add (new JLabel (ICON));						
+						}
 					}
 					else {
 						board_arrangement[i][j] = null;
@@ -122,6 +126,7 @@ public class GameBoard extends JPanel{
 			}
 		}
 		addPieces();
+		this.revalidate();
 	}
 	
 		@Override
