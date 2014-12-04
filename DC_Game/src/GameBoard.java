@@ -19,6 +19,7 @@ public class GameBoard extends JPanel{
 	protected static ImageIcon ICON = null;
 	private click_mode myMode;
 	private Point clickedPiece;
+	private boolean turn;
 
 
 	// Creates board every-time the code is run based on current status
@@ -29,6 +30,7 @@ public class GameBoard extends JPanel{
 		setLayout(new GridLayout(8,8));
 		setSize (BOARD_WIDTH,BOARD_HEIGHT);
 		myMode = click_mode.unclicked;
+		turn = true;
 	}
 	
 	public void createNewBoard() {
@@ -145,6 +147,7 @@ public class GameBoard extends JPanel{
 				// Set up Functionality for First Click
 				if (myMode == click_mode.unclicked) {
 					if (board_arrangement[i][j] != null) {
+						if (board_arrangement[i][j].getColor() == turn) {
 						Set <Point> myOptions = 
 								board_arrangement[i][j].getOptions
 								(board_arrangement,i,j);
@@ -155,6 +158,7 @@ public class GameBoard extends JPanel{
 						clickedPiece = new Point (i,j);
 						myMode = click_mode.clicked;
 						refreshBoard();
+						}
 					}
 				}
 
@@ -171,9 +175,10 @@ public class GameBoard extends JPanel{
 						board_arrangement[i][j] = board_arrangement[x][y];
 						board_arrangement[x][y] = null;
 					}
+					myMode = click_mode.unclicked;
 					createNewBoard();
 					refreshBoard();
-					myMode = click_mode.unclicked;
+					turn = !(turn);
 				}
 			}
 		});
