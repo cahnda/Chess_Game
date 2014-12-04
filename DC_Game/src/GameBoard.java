@@ -165,13 +165,8 @@ public class GameBoard extends JPanel{
 				// Set up Functionality for Second Click
 				else {
 					if (square.getBackground().equals(Color.green)) {
-						System.out.println ("hit it");
 						int x = clickedPiece.getX();
-						System.out.println(x);
-						System.out.println(i);
 						int y = clickedPiece.getY();
-						System.out.println(y);
-						System.out.println(j);
 						board_arrangement[i][j] = board_arrangement[x][y];
 						board_arrangement[x][y] = null;
 						turn = !(turn);
@@ -182,17 +177,6 @@ public class GameBoard extends JPanel{
 				}
 			}
 		});
-	}
-
-	
-	public Point findMySquare(JPanel square) {
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (square == squares [i][j])
-					return new Point (i,j);
-			}
-		}
-		return null;
 	}
 
 	public void refreshBoard() {
