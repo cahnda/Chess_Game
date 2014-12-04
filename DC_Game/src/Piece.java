@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 public abstract class Piece {	
 	protected boolean myColor;
 	protected JLabel myLabel;
+	protected String name;
 
 	public ImageIcon readImage(String filename, int w, int h) {
 		int width = w / 8;
@@ -34,6 +35,10 @@ public abstract class Piece {
 	
 	public boolean getColor() {
 		return myColor;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public Set <Point> getOptions(Piece[][] board_arrangement, int i, int j) {

@@ -13,6 +13,7 @@ public class Pawn extends Piece {
 			myLabel = new JLabel (readImage("bpawn.png",w,h));
 			myColor = false;
 		}
+		name = "pawn";
 	}
 	
 	@Override
@@ -40,10 +41,11 @@ public class Pawn extends Piece {
 		//Add ability to capture pieces diagonally
 		int[] capVals = new int[2]; capVals[0]=j+1; capVals[1]=j-1;
 		for (int cVal: capVals) {	
-			if (cVal > 0 && cVal < 8 && 
+			if (cVal >= 0 && cVal < 8 && 
 					(!(board_arrangement[val1][cVal] == null)) && 
+					(!(board_arrangement[val1][cVal].getName().equals("king")))&& 
 					(board_arrangement[val1][cVal].getColor() 
-							!= this.getColor())) {
+							!= this.getColor())){
 				arr.add(new Point (val1,cVal));
 			}
 		}
