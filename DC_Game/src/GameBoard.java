@@ -152,8 +152,15 @@ public class GameBoard extends JPanel{
 								board_arrangement[i][j].getOptions
 								(board_arrangement,i,j);
 						for (Point p: myOptions) {
+							if (squares[p.getX()][p.getY()].
+							getBackground() == Color.white) {
+								squares[p.getX()][p.getY()].
+								setBackground(Color.green);
+							}
+							else {
 							squares[p.getX()][p.getY()].
-							setBackground(Color.green);
+							setBackground(Color.green.darker());
+							}
 						}
 						clickedPiece = new Point (i,j);
 						myMode = click_mode.clicked;
@@ -164,7 +171,8 @@ public class GameBoard extends JPanel{
 
 				// Set up Functionality for Second Click
 				else {
-					if (square.getBackground().equals(Color.green)) {
+					if (square.getBackground().equals(Color.green) ||
+						square.getBackground().equals(Color.green.darker())) {
 						int x = clickedPiece.getX();
 						int y = clickedPiece.getY();
 						board_arrangement[i][j] = board_arrangement[x][y];

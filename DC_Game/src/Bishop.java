@@ -20,8 +20,7 @@ public class Bishop extends Piece {
 	public Set<Point> getOptions(Piece[][] board_arrangement, int i, int j) {
 		Set <Point> arr = new HashSet<Point>();
 
-
-		//forward, left
+		//back, left
 		for (int bk = 1; bk <= i; bk++) {
 			if ((i - bk >= 0) && (j-bk >= 0)) {
 				Point p = new Point (i - bk, j - bk);
@@ -36,7 +35,7 @@ public class Bishop extends Piece {
 			}
 		}
 
-		//forward, right
+		//back, right
 		for (int bk = 1; bk <= i; bk++) {
 			if ((i - bk >= 0) && (j+bk < 8)) {
 				Point p = new Point (i - bk, j + bk);
@@ -51,7 +50,7 @@ public class Bishop extends Piece {
 			}
 		}
 
-		//back left
+		//forward left
 		for (int frw = 1; frw <= 7-i; frw++) {
 			if ((i + frw < 8) && (j-frw >= 0)) {
 				Point p = new Point (i + frw, j - frw);
@@ -65,7 +64,7 @@ public class Bishop extends Piece {
 				}
 			}
 		}
-		//back right
+		//forward right
 		for (int frw = 1; frw <= 7-i; frw++) {
 			if ((i + frw < 8) && (j+frw < 8)) {
 				Point p = new Point (i + frw, j + frw);
