@@ -15,7 +15,8 @@ public class Queen extends Piece {
 		}
 		name = "queen";
 	}
-
+	
+	@Override
 	public Set<Point> getOptions(Piece[][] board_arrangement, int i, int j) {
 		Set <Point> arr = new HashSet<Point>();
 

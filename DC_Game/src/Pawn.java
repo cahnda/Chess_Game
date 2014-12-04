@@ -34,8 +34,10 @@ public class Pawn extends Piece {
 			arr.add(P1);
 		}
 		Point P2 = new Point (val2, j);
-		if (board_arrangement [val1][j] == null && (i == 1 || i == 6)) {
-			arr.add(P2);
+		if ((i == 1 && myColor) || (i == 6 && !(myColor))){
+			if (board_arrangement [val2][j] == null ) {
+				arr.add(P2);
+			}
 		}
 		
 		//Add ability to capture pieces diagonally

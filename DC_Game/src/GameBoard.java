@@ -152,14 +152,17 @@ public class GameBoard extends JPanel{
 								board_arrangement[i][j].getOptions
 								(board_arrangement,i,j);
 						for (Point p: myOptions) {
+							System.out.println(p.getX());
+							System.out.println(p.getY());
+
 							if (squares[p.getX()][p.getY()].
 							getBackground() == Color.white) {
 								squares[p.getX()][p.getY()].
 								setBackground(Color.green);
 							}
 							else {
-							squares[p.getX()][p.getY()].
-							setBackground(Color.green.darker());
+								squares[p.getX()][p.getY()].
+								setBackground(Color.green.darker());
 							}
 						}
 						clickedPiece = new Point (i,j);
@@ -177,6 +180,12 @@ public class GameBoard extends JPanel{
 						int y = clickedPiece.getY();
 						board_arrangement[i][j] = board_arrangement[x][y];
 						board_arrangement[x][y] = null;
+						if (board_arrangement[i][j].getName() == "pawn" 
+								&& (i==0 || i==7)) {
+							board_arrangement[i][j] = new Queen(
+									board_arrangement[i][j].getColor(),
+									getWidth(),getHeight());
+						}
 						turn = !(turn);
 					}
 					myMode = click_mode.unclicked;
