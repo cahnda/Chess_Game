@@ -1,12 +1,8 @@
-import javax.imageio.*;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel{
@@ -62,41 +58,53 @@ public class GameBoard extends JPanel{
 			for (int j = 0; j < 8; j++){
 				if (i == 1 || i == 6) {
 					if (i == 1)
-						board_arrangement[i][j] = new Pawn(true,this.getWidth(),this.getHeight());
+						board_arrangement[i][j] = 
+						new Pawn(true,this.getWidth(),this.getHeight());
 					else 
-						board_arrangement[i][j] = new Pawn(false,this.getWidth(),this.getHeight());
+						board_arrangement[i][j] = 
+						new Pawn(false,this.getWidth(),this.getHeight());
 				}
 				else {
 					if (i == 0 || i == 7) {
 						if (j == 0 || j == 7) {
 							if (i == 0)
-								board_arrangement[i][j] = new Rook(true,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Rook
+								(true,this.getWidth(),this.getHeight());
 							else
-								board_arrangement[i][j] = new Rook(false,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Rook
+								(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 1 || j == 6) {
 							if (i == 0)
-								board_arrangement[i][j] = new Knight(true,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Knight
+								(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new Knight(false,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Knight
+								(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 2 || j == 5) {
 							if (i == 0)
-								board_arrangement[i][j] = new Bishop(true,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Bishop
+								(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new Bishop(false,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Bishop
+								(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 3){
 							if (i == 0)
-								board_arrangement[i][j] = new Queen(true,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Queen
+								(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new Queen(false,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new Queen
+								(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 4){
 							if (i == 0)
-								board_arrangement[i][j] = new King(true,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new King
+								(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new King(false,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = new King
+								(false,this.getWidth(),this.getHeight());
 						}
 					} 
 					else {
@@ -124,7 +132,8 @@ public class GameBoard extends JPanel{
 		l.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				myMode = click_mode.clicked;
-				Point [] myOptions = board_arrangement[i][j].getOptions(board_arrangement,i,j);
+				Point [] myOptions = board_arrangement[i][j].getOptions
+						(board_arrangement,i,j);
 				for (Point p: myOptions) {
 					squares[p.getX()][p.getY()].setBackground(Color.green);
 				}

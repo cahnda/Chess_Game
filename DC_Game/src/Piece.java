@@ -19,7 +19,7 @@ public abstract class Piece {
 			System.out.println ("If this happens, this code will break. "
 					+ "It won't, because the images are hardcoded in.");		
 		}
-		Image pic = img.getScaledInstance( (int) (.8 * width),(int) (.8 * height),
+		Image pic = img.getScaledInstance((int)(.8 * width),(int)(.8 * height),
 				Image.SCALE_SMOOTH);
 		return new ImageIcon(pic);
 	}
