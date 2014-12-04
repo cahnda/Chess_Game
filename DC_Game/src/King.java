@@ -35,8 +35,9 @@ public class King extends Piece {
 			}
 			else {
 				if (!(board_arrangement[p.getX()][p.getY()] == null)){
-					if (board_arrangement[p.getX()][p.getY()].getColor() 
-							== myColor) {
+					Piece ba = board_arrangement[p.getX()][p.getY()];
+					if (ba.getColor() 
+							== myColor || ba.getName().equals("king")) {
 						remove.add(p);
 					}
 				}
