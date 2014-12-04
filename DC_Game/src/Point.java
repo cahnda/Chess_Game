@@ -2,9 +2,9 @@ public class Point {
 	private int xVal;
 	private int yVal;
 	
-	public Point (){
-		xVal = 0;
-		yVal = 0;
+	public Point (int x, int y){
+		xVal = x;
+		yVal = y;
 	}
 	
 	public int getX() {

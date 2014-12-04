@@ -62,41 +62,41 @@ public class GameBoard extends JPanel{
 			for (int j = 0; j < 8; j++){
 				if (i == 1 || i == 6) {
 					if (i == 1)
-						board_arrangement[i][j] = new Pawn(true,BOARD_WIDTH,BOARD_HEIGHT);
+						board_arrangement[i][j] = new Pawn(true,this.getWidth(),this.getHeight());
 					else 
-						board_arrangement[i][j] = new Pawn(false,BOARD_WIDTH,BOARD_HEIGHT);
+						board_arrangement[i][j] = new Pawn(false,this.getWidth(),this.getHeight());
 				}
 				else {
 					if (i == 0 || i == 7) {
 						if (j == 0 || j == 7) {
 							if (i == 0)
-								board_arrangement[i][j] = new Rook(true,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Rook(true,this.getWidth(),this.getHeight());
 							else
-								board_arrangement[i][j] = new Rook(false,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Rook(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 1 || j == 6) {
 							if (i == 0)
-								board_arrangement[i][j] = new Knight(true,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Knight(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new Knight(false,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Knight(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 2 || j == 5) {
 							if (i == 0)
-								board_arrangement[i][j] = new Bishop(true,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Bishop(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new Bishop(false,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Bishop(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 3){
 							if (i == 0)
-								board_arrangement[i][j] = new Queen(true,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Queen(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new Queen(false,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new Queen(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 4){
 							if (i == 0)
-								board_arrangement[i][j] = new King(true,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new King(true,this.getWidth(),this.getHeight());
 							else 
-								board_arrangement[i][j] = new King(false,BOARD_WIDTH,BOARD_HEIGHT);
+								board_arrangement[i][j] = new King(false,this.getWidth(),this.getHeight());
 						}
 					} 
 					else {
@@ -111,13 +111,15 @@ public class GameBoard extends JPanel{
 		for (int i = 0; i < board_arrangement.length; i++) {
 			for (int j = 0; j < board_arrangement.length; j++) {
 				if (!(board_arrangement[i][j] == null)) {
-					squares[i][j].add(board_arrangement[i][j].getLabel());
+					squares[i][j].removeAll();
+					JLabel l = board_arrangement[i][j].getLabel();
+					addListnerUnclicked (l,i,j);
+					squares[i][j].add(l);
 				}
 			}
 		}
 	}
 	
-/*
 	private void addListnerUnclicked(JLabel l, int i, int j) {
 		l.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -126,10 +128,10 @@ public class GameBoard extends JPanel{
 				for (Point p: myOptions) {
 					squares[p.getX()][p.getY()].setBackground(Color.green);
 				}
+				refreshBoard();
 			}
 		});
-	}*/
-	
+	}
 	
 	public void refreshBoard() {
 		this.removeAll();

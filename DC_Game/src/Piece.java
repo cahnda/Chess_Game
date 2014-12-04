@@ -25,6 +25,13 @@ public abstract class Piece {
 	}
 	
 	abstract JLabel getLabel();
-	abstract Point[] getOptions(Piece[][] board_arrangement, int i, int j);
+	public Point[] getOptions(Piece[][] board_arrangement, int i, int j) {
+		Point p1 = new Point (0,0);
+		Point p2 = new Point (0,1);
+		Point p3 = new Point (0,2);
+		Point[] arr = new Point[3];
+		arr[0] = p1; arr[1] = p2; arr[2] = p3;
+		return arr;
+	}
 
 }

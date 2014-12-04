@@ -13,11 +13,5 @@ public class Rook extends Piece {
 	public JLabel getLabel() {
 		return myLabel;
 	}
-	
-	@Override
-	Point[] getOptions(Piece[][] board_arrangement, int i, int j) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

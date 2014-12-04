@@ -14,10 +14,4 @@ public class Bishop extends Piece {
 		return myLabel;
 	}
 	
-	@Override
-	public Point[] getOptions(Piece[][] board_arrangement, int i, int j) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
