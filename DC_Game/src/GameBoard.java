@@ -21,12 +21,6 @@ public class GameBoard extends JPanel{
 		squares = new JPanel[8][8];
 		setLayout(new GridLayout(8,8));
 		setSize (BOARD_WIDTH,BOARD_HEIGHT);
-		createBoard();
-		for (JPanel[] j_list: squares) {
-			for (JPanel j: j_list) {
-				this.add(j);
-			}
-		}
 	}
 	
 	public void createBoard() {
@@ -59,16 +53,15 @@ public class GameBoard extends JPanel{
 	}
 	
 	public void addPieces() {
-		System.out.println ("Just got called");
 		//Starting with zero for consistent with CS norms
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++){
-				if (i == 1) {
+				if (i == 1 || i == 6) {
 					board_arrangement[i][j] = new Pawn();
 					ICON = readImage("poison.png");
 					squares[i][j].add (new JLabel (ICON));
 				} else {
-					if (i == 0) {
+					if (i == 0 || i == 7) {
 						if (j == 0 || j == 7) {
 							board_arrangement[i][j] = new Rook();
 							ICON = readImage("poison.png");
@@ -83,17 +76,32 @@ public class GameBoard extends JPanel{
 							board_arrangement[i][j] = new Bishop();
 							ICON = readImage("poison.png");
 							squares[i][j].add (new JLabel (ICON));						
+						}
+						if ( i == 0) {
+							if (j == 3){
+								board_arrangement[i][j] = new Queen();
+								ICON = readImage("poison.png");
+								squares[i][j].add (new JLabel (ICON));						
 							}
-						if (j == 3){
-							board_arrangement[i][j] = new Queen();
-							ICON = readImage("poison.png");
-							squares[i][j].add (new JLabel (ICON));						
+							if (j == 4){
+								board_arrangement[i][j] = new King();
+								ICON = readImage("poison.png");
+								squares[i][j].add (new JLabel (ICON));						
+							}
+						} 
+						else {
+							if (j == 3){
+								board_arrangement[i][j] = new King();
+								ICON = readImage("poison.png");
+								squares[i][j].add (new JLabel (ICON));
+							}
+							if (j == 4){
+								board_arrangement[i][j] = new Queen();
+								ICON = readImage("poison.png");
+								squares[i][j].add (new JLabel (ICON));	
+							} 
 						}
-						if (j == 4){
-							board_arrangement[i][j] = new King();
-							ICON = readImage("poison.png");
-							squares[i][j].add (new JLabel (ICON));						
-						}
+
 					}
 					else {
 						board_arrangement[i][j] = null;
@@ -106,6 +114,13 @@ public class GameBoard extends JPanel{
 
 	// Set the parameters when the board is created
 	public void reset() {
+		this.removeAll();
+		createBoard();
+		for (JPanel[] j_list: squares) {
+			for (JPanel j: j_list) {
+				this.add(j);
+			}
+		}
 		addPieces();
 	}
 	
