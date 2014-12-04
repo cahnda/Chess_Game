@@ -2,12 +2,16 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public abstract class Piece {	
+	protected boolean myColor;
+	protected JLabel myLabel;
 
 	public ImageIcon readImage(String filename, int w, int h) {
 		int width = w / 8;
@@ -24,14 +28,24 @@ public abstract class Piece {
 		return new ImageIcon(pic);
 	}
 	
-	abstract JLabel getLabel();
-	public Point[] getOptions(Piece[][] board_arrangement, int i, int j) {
+	public JLabel getLabel() {
+		return myLabel;
+	}
+	
+	public boolean getColor() {
+		return myColor;
+	}
+	
+	public Set <Point> getOptions(Piece[][] board_arrangement, int i, int j) {
+		Set <Point> arr = new HashSet<Point>();
 		Point p1 = new Point (0,0);
 		Point p2 = new Point (0,1);
 		Point p3 = new Point (0,2);
-		Point[] arr = new Point[3];
-		arr[0] = p1; arr[1] = p2; arr[2] = p3;
+		arr.add(p1); arr.add(p2); arr.add(p3);
 		return arr;
 	}
-
 }
+
+
+	
+

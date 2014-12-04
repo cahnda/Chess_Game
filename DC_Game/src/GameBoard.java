@@ -1,7 +1,9 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 
 @SuppressWarnings("serial")
@@ -121,33 +123,63 @@ public class GameBoard extends JPanel{
 				if (!(board_arrangement[i][j] == null)) {
 					squares[i][j].removeAll();
 					JLabel l = board_arrangement[i][j].getLabel();
-					addListnerUnclicked (l,i,j);
 					squares[i][j].add(l);
 				}
 			}
 		}
 	}
 	
-	private void addListnerUnclicked(JLabel l, int i, int j) {
-		l.addMouseListener(new MouseAdapter() {
+	//Add a listner to each square
+	private void addLisners() {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				JPanel square = squares [i][j];
+				addEventListners (square, i, j);
+			}
+		}
+	}
+		
+	private void addEventListners(JPanel square, int i, int j) {
+		square.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				myMode = click_mode.clicked;
-				Point [] myOptions = board_arrangement[i][j].getOptions
-						(board_arrangement,i,j);
-				for (Point p: myOptions) {
-					squares[p.getX()][p.getY()].setBackground(Color.green);
+				// Set up Functionality for First Click
+				if (myMode == click_mode.unclicked) {
+					if (board_arrangement[i][j] != null) {
+						Set <Point> myOptions = 
+								board_arrangement[i][j].getOptions
+								(board_arrangement,i,j);
+						for (Point p: myOptions) {
+							squares[p.getX()][p.getY()].
+							setBackground(Color.green);
+						}
+						myMode = click_mode.clicked;
+						refreshBoard();
+					}
 				}
-				refreshBoard();
+
+				// Set up Functionality for Second Click
+				else {
+					if (square.getBackground().equals(Color.green)) {
+						squares.indexOf(square);
+					}
+					else {
+						createNewBoard();
+						refreshBoard();
+					}
+					myMode = click_mode.unclicked;
+				}
 			}
 		});
 	}
-	
+
+
 	public void refreshBoard() {
 		this.removeAll();
 		addPieces();
+		addLisners();
 		addBoard();
+		this.revalidate();
 	}
-	
 	
 	// Set the parameters when the board is created
 	public void reset() {
@@ -163,8 +195,14 @@ public class GameBoard extends JPanel{
 		//Add the pieces to our board
 		addPieces();
 		
+		// Add listeners to the board
+		addLisners();
+		
 		//Add the board to our JPanel
 		addBoard();
+		
+		//Reset the ability to click pieces
+		myMode = click_mode.unclicked;
 		
 		//Refresh the board
 		this.revalidate();
