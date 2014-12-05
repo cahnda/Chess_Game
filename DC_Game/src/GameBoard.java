@@ -11,7 +11,6 @@ public class GameBoard extends JPanel{
 		unclicked, clicked
 	}
 	
-	
 	public static final int BOARD_WIDTH = 600;
 	public static final int BOARD_HEIGHT = 600;
 	private Piece [][] board_arrangement;
