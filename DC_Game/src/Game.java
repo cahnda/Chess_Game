@@ -2,6 +2,7 @@
 // imports necessary libraries for Java swing
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 /**
@@ -17,14 +18,20 @@ public class Game implements Runnable {
 		final JFrame frame = new JFrame("TOP LEVEL FRAME");
 		frame.setLocation(300, 300);
 
+		// Status panel
+		final JPanel status_panel = new JPanel();
+		frame.add(status_panel, BorderLayout.NORTH);
+		final JLabel status = new JLabel("White's Turn");
+		status_panel.add(status);
+		
 		// Main playing area
 		GameBoard court;
-		court = new GameBoard();
+		court = new GameBoard(status);
 		frame.add(court, BorderLayout.CENTER);
 
 		// Reset button
 		final JPanel control_panel = new JPanel();
-		frame.add(control_panel, BorderLayout.NORTH);
+		frame.add(control_panel, BorderLayout.SOUTH);
 
 		// Note here that when we add an action listener to the reset
 		// button, we define it as an anonymous inner class that is
@@ -38,6 +45,15 @@ public class Game implements Runnable {
 			}
 		});
 		control_panel.add(reset);
+		
+		//Add the checkmate button to the screen
+		final JButton checkmate = new JButton("I Acknowledge Checkmate/Resign");
+		checkmate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				court.checkmate();
+			}
+		});
+		control_panel.add(checkmate);
 
 		// Put the frame on the screen
 		frame.pack();

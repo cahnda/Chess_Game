@@ -42,7 +42,7 @@ public class Knight extends Piece {
 				if (!(board_arrangement[p.getX()][p.getY()] == null)){
 					Piece ba = board_arrangement[p.getX()][p.getY()];
 					if (ba.getColor() 
-							== myColor || ba.getName().equals("king")) {
+							== myColor) {
 						remove.add(p);
 					}
 				}

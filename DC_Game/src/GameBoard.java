@@ -5,12 +5,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 
-
 @SuppressWarnings("serial")
 public class GameBoard extends JPanel{
 	public enum click_mode {
 		unclicked, clicked
 	}
+	
 	
 	public static final int BOARD_WIDTH = 600;
 	public static final int BOARD_HEIGHT = 600;
@@ -19,11 +19,15 @@ public class GameBoard extends JPanel{
 	protected static ImageIcon ICON = null;
 	private click_mode myMode;
 	private Point clickedPiece;
+	private Piece Black_King;
+	private Piece White_King;
 	private boolean turn;
+	public boolean check;
+	private JLabel status; // Current status text (i.e. Running...)
 
 
 	// Creates board every-time the code is run based on current status
-	public GameBoard() {
+	public GameBoard(JLabel status) {
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		board_arrangement = new Piece[8][8];
 		squares = new JPanel[8][8];
@@ -31,6 +35,7 @@ public class GameBoard extends JPanel{
 		setSize (BOARD_WIDTH,BOARD_HEIGHT);
 		myMode = click_mode.unclicked;
 		turn = true;
+		this.status = status;
 	}
 	
 	public void createNewBoard() {
@@ -103,12 +108,15 @@ public class GameBoard extends JPanel{
 								(false,this.getWidth(),this.getHeight());
 						}
 						if (j == 4){
-							if (i == 0)
-								board_arrangement[i][j] = new King
-								(true,this.getWidth(),this.getHeight());
-							else 
-								board_arrangement[i][j] = new King
-								(false,this.getWidth(),this.getHeight());
+							if (i == 0) {
+								White_King = new King
+										(true,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = White_King;}
+							else {
+								Black_King = new King
+										(false,this.getWidth(),this.getHeight());
+								board_arrangement[i][j] = Black_King;
+							}
 						}
 					} 
 					else {
@@ -148,22 +156,25 @@ public class GameBoard extends JPanel{
 				if (myMode == click_mode.unclicked) {
 					if (board_arrangement[i][j] != null) {
 						if (board_arrangement[i][j].getColor() == turn) {
-						Set <Point> myOptions = 
-								board_arrangement[i][j].getOptions
-								(board_arrangement,i,j);
-						for (Point p: myOptions) {
-							System.out.println(p.getX());
-							System.out.println(p.getY());
-
-							if (squares[p.getX()][p.getY()].
-							getBackground() == Color.white) {
-								squares[p.getX()][p.getY()].
-								setBackground(Color.green);
-							}
-							else {
-								squares[p.getX()][p.getY()].
-								setBackground(Color.green.darker());
-							}
+							Set <Point> myOptions = 
+									board_arrangement[i][j].getOptions
+									(board_arrangement,i,j);
+							for (Point p: myOptions) {
+								//Exclude Kings, Can't Be Taken
+								if (board_arrangement[p.getX()][p.getY()]==null 
+										|| (!(board_arrangement
+												[p.getX()][p.getY()].getName()
+												== "king"))) {
+									if (squares[p.getX()][p.getY()].
+											getBackground() == Color.white) {
+										squares[p.getX()][p.getY()].
+										setBackground(Color.green);
+									}
+									else {
+										squares[p.getX()][p.getY()].
+										setBackground(Color.green.darker());
+									}
+								}
 						}
 						clickedPiece = new Point (i,j);
 						myMode = click_mode.clicked;
@@ -178,15 +189,47 @@ public class GameBoard extends JPanel{
 						square.getBackground().equals(Color.green.darker())) {
 						int x = clickedPiece.getX();
 						int y = clickedPiece.getY();
-						board_arrangement[i][j] = board_arrangement[x][y];
-						board_arrangement[x][y] = null;
-						if (board_arrangement[i][j].getName() == "pawn" 
-								&& (i==0 || i==7)) {
-							board_arrangement[i][j] = new Queen(
-									board_arrangement[i][j].getColor(),
-									getWidth(),getHeight());
+						//Copy the arrangement to test if the move will lead
+						//to check
+						Piece[][] new_arrangement = new Piece[8][8];
+						for (int c = 0; c<8;c++) {
+							for (int cp =0; cp<8;cp++) {
+								new_arrangement[c][cp] = board_arrangement[c][cp];
+							}
 						}
-						turn = !(turn);
+						new_arrangement[i][j] = new_arrangement[x][y];
+						new_arrangement[x][y] = null;
+						//Check if my king is in check
+						if (!(isCheck(turn,new_arrangement))){
+							board_arrangement = new_arrangement;
+							if (board_arrangement[i][j].getName() == "pawn" 
+									&& (i==0 || i==7)) {
+								board_arrangement[i][j] = new Queen(
+										board_arrangement[i][j].getColor(),
+										getWidth(),getHeight());
+							}
+							turn = !(turn);
+							check = isCheck (turn,board_arrangement);
+							//Set status to account for status of board
+							if (check) {
+								if (turn)
+									status.setText
+									("White's Turn. You are in Check");
+								else
+									status.setText
+									("Black's Turn. You are in Check");
+							}
+							else {
+								if (turn)
+									status.setText("White's Turn");
+								else
+									status.setText("Black's Turn");
+							}
+						}
+						else {
+							status.setText
+							("Check. You can't do that.");
+						}
 					}
 					myMode = click_mode.unclicked;
 					createNewBoard();
@@ -195,7 +238,7 @@ public class GameBoard extends JPanel{
 			}
 		});
 	}
-
+	
 	public void refreshBoard() {
 		this.removeAll();
 		addPieces();
@@ -224,22 +267,62 @@ public class GameBoard extends JPanel{
 		//Add the board to our JPanel
 		addBoard();
 		
-		//Reset the ability to click pieces
+		//Reset internal variables
 		myMode = click_mode.unclicked;
+		turn = true;
+		status.setText("White's Turn");
 		
 		//Refresh the board
 		this.revalidate();
 	}
 	
-		@Override
+	public void checkmate() {
+		if (turn) {
+			status.setText("Black Wins. Press Reset to Play Again");
+		}
+		else {
+			status.setText("White Wins. Press Reset to Play Again");
+		}
+	}
+	
+	public boolean isCheck (boolean color, Piece[][] arrangement) {
+		Piece king;
+		Point king_point = null;
+		//Determine which king we are evaluating
+		if (color == true) {
+			king = White_King;
+		}
+		else {
+			king = Black_King;
+		}
+		
+		//Find the king's coordinates
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (arrangement[i][j] == king) {
+					king_point = new Point (i,j);
+				}
+			}
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {				
+				Piece p = arrangement[i][j];
+				if (!(p == null)) {
+					for (Point po: p.getOptions(arrangement,i,j)) {
+						if (po.equals(king_point)) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		/*for (GameObj[] go_arr: board_arrangement) {
-			for (GameObj go: go_arr) {
-				if (!(go == null))
-					go.draw(g);
-			}
-		}*/
 	}
 	
 	@Override

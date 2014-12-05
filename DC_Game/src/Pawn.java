@@ -45,7 +45,6 @@ public class Pawn extends Piece {
 		for (int cVal: capVals) {	
 			if (cVal >= 0 && cVal < 8 && 
 					(!(board_arrangement[val1][cVal] == null)) && 
-					(!(board_arrangement[val1][cVal].getName().equals("king")))&& 
 					(board_arrangement[val1][cVal].getColor() 
 							!= this.getColor())){
 				arr.add(new Point (val1,cVal));

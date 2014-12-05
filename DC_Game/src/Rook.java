@@ -27,7 +27,7 @@ public class Rook extends Piece {
 				arr.add(p);
 				if (!(board_arrangement [i - bk][j] == null)){
 					Piece ba = board_arrangement [i - bk][j];
-					if (ba.getColor() == myColor || ba.getName().equals("king")) {
+					if (ba.getColor() == myColor) {
 						arr.remove(p);
 					}
 					break;
@@ -43,7 +43,7 @@ public class Rook extends Piece {
 				if (!(board_arrangement [i][j - bk] == null)) {
 					Piece ba = board_arrangement [i][j - bk];
 					if (ba.getColor()
-							== myColor || ba.getName().equals("king")) {
+							== myColor) {
 						arr.remove(p);
 					}
 					break;
@@ -59,7 +59,7 @@ public class Rook extends Piece {
 				if (!(board_arrangement [i + frw][j] == null)) {
 					Piece ba = board_arrangement [i + frw][j];
 					if (ba.getColor()
-							== myColor || ba.getName().equals("king")) {
+							== myColor) {
 						arr.remove(p);
 					}
 					break;
@@ -74,7 +74,7 @@ public class Rook extends Piece {
 				if (!(board_arrangement [i][j + frw] == null)){
 					Piece ba = board_arrangement [i][j + frw];
 					if (ba.getColor()
-							== myColor || ba.getName().equals("king")) {
+							== myColor) {
 						arr.remove(p);
 					}
 					break;

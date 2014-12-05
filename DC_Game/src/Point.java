@@ -21,4 +21,19 @@ public class Point {
 		yVal = y;
 	}
 	
+	@Override 
+	public boolean equals(Object other) {
+	    boolean result = false;
+	    if (other instanceof Point) {
+	        Point that = (Point) other;
+	        result = (this.getX() == that.getX() && this.getY() == that.getY());
+	    }
+	    return result;
+	}
+	
+    @Override 
+    public int hashCode() {
+        return (31 * (31 + getX()) + getY());
+    }
+	
 }
