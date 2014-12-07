@@ -59,7 +59,6 @@ public class GameBoard extends JPanel{
 		}
 	}
 
-
 	public void newPieces() {
 		//Starting with zero for consistent with CS norms
 		for (int i = 0; i < 8; i++) {
@@ -198,15 +197,39 @@ public class GameBoard extends JPanel{
 						}
 						new_arrangement[i][j] = new_arrangement[x][y];
 						new_arrangement[x][y] = null;
+												
 						if (new_arrangement[i][j].getName() == "pawn" 
 								&& (i==0 || i==7)) {
 							new_arrangement[i][j] = new Queen(
 									new_arrangement[i][j].getColor(),
 									getWidth(),getHeight());
 						}
+												
 						//Check if my king is in check
 						if (!(isCheck(turn,new_arrangement))){
+							Piece isKing = board_arrangement[clickedPiece.getX()]
+									[clickedPiece.getY()];
+							if (isKing.getName().equals("king")) {
+								((King) isKing).setMoved(true);
+								//if I moved two spaces
+								if (j-y > 1) {
+									//move the rook
+									new_arrangement [i][j-1] = 
+											board_arrangement[i][j+1];
+									new_arrangement[i][j+1]= null;
+								}
+								else {
+									if (j-y < -1) {
+										//move the rook
+										new_arrangement [i][j+1] = 
+												board_arrangement[i][j-2];
+										new_arrangement[i][j-2]= null;
+									}
+								}
+							}
+							
 							board_arrangement = new_arrangement;
+
 							turn = !(turn);
 							check = isCheck (turn,board_arrangement);
 							//Set status to account for status of board

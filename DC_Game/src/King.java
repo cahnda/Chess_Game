@@ -4,7 +4,7 @@ import java.util.Set;
 import javax.swing.JLabel;
 
 public class King extends Piece {
-
+	private boolean hasMoved;
 	public King(boolean color, int w, int h) {
 		if (color == true) {
 			myLabel = new JLabel (readImage("king.png",w,h));
@@ -15,6 +15,11 @@ public class King extends Piece {
 			myColor = false;
 		}
 		name = "king";
+		hasMoved = false;
+	}
+	
+	public void setMoved(boolean val) {
+		hasMoved = val;
 	}
 	
 	@Override
@@ -26,6 +31,14 @@ public class King extends Piece {
 			for (int y = j-1; y < j+2;y++) {
 				arr.add(new Point(x,y));
 			}
+		}
+		
+		if (canCastleUp(board_arrangement,i,j)) {
+			arr.add(new Point (i,j+2));
+		}
+		
+		if (canCastleDown(board_arrangement,i,j)) {
+			arr.add(new Point (i,j-2));
 		}
 		
 		for (Point p: arr) {
@@ -49,5 +62,37 @@ public class King extends Piece {
 			arr.remove(p);
 		}
 		return arr;
-	}	
+	}
+	
+	public boolean canCastleUp (Piece[][] board_arrangement, int i, int j) {
+		//CASTLING
+		if (j+3 == 7) {
+			if (hasMoved == false
+					&& (!(board_arrangement[i][j+3] == null)) &&
+					board_arrangement[i][j+3].getName().equals("rook")) {
+				if (board_arrangement[i][j+1] == null &&
+						board_arrangement[i][j+2] == null) {
+				} 
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean canCastleDown (Piece[][] board_arrangement, int i, int j) {
+		//CASTLING (only possible under very specific circumstances, detailed
+		// below
+		if (j-4 == 0) {
+			if (hasMoved == false 
+					&& (!(board_arrangement[i][j-4] == null)) &&
+					board_arrangement[i][j-4].getName().equals("rook")) {
+				if (board_arrangement[i][j-1] == null &&
+						board_arrangement[i][j-2] == null &&
+						board_arrangement[i][j-3] == null) {
+				}
+				return true;
+			}
+		}
+		return false;
+	}
 }
