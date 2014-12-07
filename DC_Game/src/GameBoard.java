@@ -10,7 +10,7 @@ public class GameBoard extends JPanel{
 	public enum click_mode {
 		unclicked, clicked
 	}
-	
+
 	public static final int BOARD_WIDTH = 600;
 	public static final int BOARD_HEIGHT = 600;
 	private Piece [][] board_arrangement;
@@ -36,7 +36,7 @@ public class GameBoard extends JPanel{
 		turn = true;
 		this.status = status;
 	}
-	
+
 	public void createNewBoard() {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -50,7 +50,7 @@ public class GameBoard extends JPanel{
 			}
 		}
 	}
-	
+
 	public void addBoard() {
 		for (JPanel[] j_list: squares) {
 			for (JPanel j: j_list) {
@@ -58,8 +58,8 @@ public class GameBoard extends JPanel{
 			}
 		}
 	}
-	
-	
+
+
 	public void newPieces() {
 		//Starting with zero for consistent with CS norms
 		for (int i = 0; i < 8; i++) {
@@ -125,7 +125,7 @@ public class GameBoard extends JPanel{
 			}
 		}
 	}
-	
+
 	public void addPieces() {
 		for (int i = 0; i < board_arrangement.length; i++) {
 			for (int j = 0; j < board_arrangement.length; j++) {
@@ -137,7 +137,7 @@ public class GameBoard extends JPanel{
 			}
 		}
 	}
-	
+
 	//Add a listner to each square
 	private void addLisners() {
 		for (int i = 0; i < 8; i++) {
@@ -147,7 +147,7 @@ public class GameBoard extends JPanel{
 			}
 		}
 	}
-		
+
 	private void addEventListners(JPanel square, int i, int j) {
 		square.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -163,7 +163,7 @@ public class GameBoard extends JPanel{
 								if (board_arrangement[p.getX()][p.getY()]==null 
 										|| (!(board_arrangement
 												[p.getX()][p.getY()].getName()
-												== "king"))) {
+												.equals("king")))) {
 									if (squares[p.getX()][p.getY()].
 											getBackground() == Color.white) {
 										squares[p.getX()][p.getY()].
@@ -174,10 +174,10 @@ public class GameBoard extends JPanel{
 										setBackground(Color.green.darker());
 									}
 								}
-						}
-						clickedPiece = new Point (i,j);
-						myMode = click_mode.clicked;
-						refreshBoard();
+							}
+							clickedPiece = new Point (i,j);
+							myMode = click_mode.clicked;
+							refreshBoard();
 						}
 					}
 				}
@@ -185,7 +185,7 @@ public class GameBoard extends JPanel{
 				// Set up Functionality for Second Click
 				else {
 					if (square.getBackground().equals(Color.green) ||
-						square.getBackground().equals(Color.green.darker())) {
+							square.getBackground().equals(Color.green.darker())) {
 						int x = clickedPiece.getX();
 						int y = clickedPiece.getY();
 						//Copy the arrangement to test if the move will lead
@@ -198,31 +198,47 @@ public class GameBoard extends JPanel{
 						}
 						new_arrangement[i][j] = new_arrangement[x][y];
 						new_arrangement[x][y] = null;
+						if (new_arrangement[i][j].getName() == "pawn" 
+								&& (i==0 || i==7)) {
+							new_arrangement[i][j] = new Queen(
+									new_arrangement[i][j].getColor(),
+									getWidth(),getHeight());
+						}
 						//Check if my king is in check
 						if (!(isCheck(turn,new_arrangement))){
 							board_arrangement = new_arrangement;
-							if (board_arrangement[i][j].getName() == "pawn" 
-									&& (i==0 || i==7)) {
-								board_arrangement[i][j] = new Queen(
-										board_arrangement[i][j].getColor(),
-										getWidth(),getHeight());
-							}
 							turn = !(turn);
 							check = isCheck (turn,board_arrangement);
 							//Set status to account for status of board
 							if (check) {
-								if (turn)
-									status.setText
-									("White's Turn. You are in Check");
-								else
-									status.setText
-									("Black's Turn. You are in Check");
+								if (isCheckMate(turn,board_arrangement)) {
+									if (turn)
+										status.setText
+										("White is in Checkmate. Black Wins.");
+									else
+										status.setText
+										("Black is in Checkmate. White Wins.");
+								}
+								else {
+									if (turn)
+										status.setText
+										("White's Turn. You are in Check");
+									else
+										status.setText
+										("Black's Turn. You are in Check");
+								}
 							}
 							else {
-								if (turn)
-									status.setText("White's Turn");
-								else
-									status.setText("Black's Turn");
+								if (isCheckMate(turn,board_arrangement)) {
+									status.setText
+									("Stalemate. It's a draw.");
+								}
+								else {
+									if (turn)
+										status.setText("White's Turn");
+									else
+										status.setText("Black's Turn");
+								}
 							}
 						}
 						else {
@@ -237,7 +253,7 @@ public class GameBoard extends JPanel{
 			}
 		});
 	}
-	
+
 	public void refreshBoard() {
 		this.removeAll();
 		addPieces();
@@ -245,36 +261,36 @@ public class GameBoard extends JPanel{
 		addBoard();
 		this.revalidate();
 	}
-	
+
 	// Set the parameters when the board is created
 	public void reset() {
 		//Clear all
 		this.removeAll();
-		
+
 		//Create new board
 		createNewBoard();
-		
+
 		//Create the new pieces
 		newPieces();
-		
+
 		//Add the pieces to our board
 		addPieces();
-		
+
 		// Add listeners to the board
 		addLisners();
-		
+
 		//Add the board to our JPanel
 		addBoard();
-		
+
 		//Reset internal variables
 		myMode = click_mode.unclicked;
 		turn = true;
 		status.setText("White's Turn");
-		
+
 		//Refresh the board
 		this.revalidate();
 	}
-	
+
 	public void checkmate() {
 		if (turn) {
 			status.setText("Black Wins. Press Reset to Play Again");
@@ -283,7 +299,7 @@ public class GameBoard extends JPanel{
 			status.setText("White Wins. Press Reset to Play Again");
 		}
 	}
-	
+
 	public boolean isCheck (boolean color, Piece[][] arrangement) {
 		Piece king;
 		Point king_point = null;
@@ -294,7 +310,7 @@ public class GameBoard extends JPanel{
 		else {
 			king = Black_King;
 		}
-		
+
 		//Find the king's coordinates
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -303,13 +319,14 @@ public class GameBoard extends JPanel{
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {				
 				Piece p = arrangement[i][j];
 				if (!(p == null)) {
 					for (Point po: p.getOptions(arrangement,i,j)) {
 						if (po.equals(king_point)) {
+							System.out.println (p.getName() + "is checking the king");
 							return true;
 						}
 					}
@@ -318,12 +335,44 @@ public class GameBoard extends JPanel{
 		}
 		return false;
 	}
-	
+
+	public boolean isCheckMate (boolean color, Piece[][] arrangement) {
+		// Color is the color of the player who is in checkmate
+
+		//Copy the arrangement to avoid aliasing problems since this method
+		//is not supposed to change any state
+
+		for (int i = 0; i < 8; i++) {
+			for (int j=0;j<8;j++) {
+				Piece p = arrangement[i][j];
+				if ((!(p == null)) && p.getColor() == color) {
+					Set <Point> myOptions = p.getOptions(arrangement,i,j);
+					for (Point option: myOptions) {
+						Piece[][] new_arrangement = new Piece[8][8];
+						for (int c = 0; c<8;c++) {
+							for (int cp =0; cp<8;cp++) {
+								new_arrangement[c][cp] = arrangement[c][cp];
+							}
+						}
+						new_arrangement[i][j] = null;
+						new_arrangement[option.getX()][option.getY()] = p;
+						if (!(isCheck (color, new_arrangement))) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(BOARD_WIDTH, BOARD_HEIGHT);

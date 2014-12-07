@@ -92,7 +92,7 @@ public class Game implements Runnable {
 		control_panel.add(reset);
 		
 		//Add the checkmate button to the screen
-		final JButton checkmate = new JButton("I Acknowledge Checkmate/Resign");
+		final JButton checkmate = new JButton("I Resign");
 		checkmate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				court.checkmate();
