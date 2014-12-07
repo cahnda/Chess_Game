@@ -1,0 +1,73 @@
+David Cahn, CIS 120, Homework 10: Chess
+
+To implement Chess, I used three core classes: GameBoard, Game, and Piece. 
+I implemented 6 subclasses of piece to represent each piece: 
+Bishop, Knight, Rook, King, Queen, and Pawn. 
+
+Game:
+This class was the over-arching class in which I set up the JFrame for the game
+and added the control panel, status panel, buttons/instructions, the GameBoard.
+This class relied on built-in JPAnel functionality. 
+
+GameBoard: 
+This class contained all of the important functionality relevant to actually 
+implemented Chess. The GameBoard was an extension of JPanel 
+(meaning that it was a JPanel in the JFrame).
+
+I started by creating the board. I used a 2D array because the board is a finite
+set of 64 squares. I represented these squares as JPanels, because each square
+contained independent state within it. Throughout the game, I continually 
+updated the values of the actual squares and then re-added them to the GameBoard,
+which I designed using Gridlayout and a "Refresh" function.
+
+Next, I added the pieces to the board at their starting positions. For my 
+back-end, I represented pieces as class and stored them in a 2D array 
+equivalent to the squares for game board. This was advantageous because it 
+meant that the index for a game square was identical to the index of the piece
+contained within it. For the UI, game pieces were represented by their graphical
+equivalent in unicode, which I downloaded from online. Each of the pieces were
+added to the gameboard as JLabels containing ImageIcons. These JLabels were
+contained in the JPanel squares, which allowed me to capture the effect of a 
+piece "in" a square.
+ 
+ Once the game's initial state was set up, players could click on pieces (black
+ or white depending on whose turn it was). I handled two types of click-events. 
+ Unclicked events and then clicked events via 2 modes: unclicked events were 
+ called on the first click (Initial state) and clickedEvents were called when 
+ a first click had already occurred. I stored as private state the value of the 
+ initial click (the piece to be moved) and then placed the piece in its new
+ location when the user made the second click.
+ 
+ At this point, I had a moving chess board and it was time to add the game rules
+ for play. For each piece, I defined a finite set of legal moves using the 
+ getOpinions abstract method, which each piece implemented. This meant the 
+ bishops could move on diagnals and that rooks could move vertically/horizontally,
+ etc.
+ 
+ Now I was ready to define check and checkmate. My check algorithm asked whether
+any piece on the board could move to the spot where the king was placed. If yes, 
+then the king was in check, if not, then the king was not in check. Checkmate was
+more complicated. Here, I asked if any piece could legally move. Since pieces 
+can't move if the king is in check, then when no piece can move, it means that the 
+king is in checkmate.
+
+Finally, I implemented "extra" features. There are part of the chess gameplay 
+but are not core to functionality. First I implemented stalemate, which I defined
+as "checkmate" when the king is not in check. This means that a player can't move
+any of his/her pieces, but is not in check. Next, I implemeneted pawn queening,
+which means that if a pawn advances to the opponents last row, it becomes a queen.
+Lastly I implemented castling, which allows a play to swap his/her king and rook
+according to predefined rules.
+
+ Piece (Bishop, Knight, Rook, King, Queen, and Pawn):
+ These classes use private state to keep track of:
+    1. Their color.
+    2. Their label (image identifiers).
+    3. Their names (string identifiers).
+ The king class also keeps track of whether it has moved, because this is a factor
+ in deciding whether or not the king can castle.
+ 
+ These classes all have methods to access this private state (getColor, getLabel,
+ getName) and a getOptions method which gets their legal moves.
+ 
+ ADDITIONAL FILES: I added PNG files for each of the pieces.
