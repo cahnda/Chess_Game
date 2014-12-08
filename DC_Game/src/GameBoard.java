@@ -147,7 +147,7 @@ public class GameBoard extends JPanel{
 		}
 	}
 
-	private void addEventListners(JPanel square, int i, int j) {
+	private void addEventListners(final JPanel square, final int i, final int j) {
 		square.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				// Set up Functionality for First Click

@@ -25,7 +25,7 @@ public class Game implements Runnable {
 		status_panel.add(status);
 		
 		// Main playing area
-		GameBoard court;
+		final GameBoard court;
 		court = new GameBoard(status);
 		frame.add(court, BorderLayout.CENTER);
 
