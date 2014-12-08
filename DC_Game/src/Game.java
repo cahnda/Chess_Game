@@ -60,7 +60,7 @@ public class Game implements Runnable {
 						+ "To win the game, you must checkmate your opponent."
 						+ "\n"
 						+ "Like regular chess games, checkmate means that the "
-						+ "king cannot avoid attack "
+						+ "king cannot avoid attack. "
 						+ "\n"
 						+ "\n"
 						+ "Cool features include: "

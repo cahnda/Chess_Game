@@ -349,7 +349,6 @@ public class GameBoard extends JPanel{
 				if (!(p == null)) {
 					for (Point po: p.getOptions(arrangement,i,j)) {
 						if (po.equals(king_point)) {
-							System.out.println (p.getName() + "is checking the king");
 							return true;
 						}
 					}
